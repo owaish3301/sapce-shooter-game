@@ -15,13 +15,13 @@ Control a spaceship and shoot down incoming meteors to survive and score points.
 
 1. Clone this repository:
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/owaish3301/sapce-shooter-game.git
 cd SpaceShooter
 ```
 
 2. Install Pygame:
 ```bash
-pip install pygame
+pip install pygame-ce
 ```
 
 ## How to Run
@@ -38,7 +38,6 @@ python main.py
 
 ## Game Features
 
-- Smooth 60 FPS gameplay
 - Player movement with boundary collision
 - Laser shooting with cooldown system
 - Meteor spawning and collision detection
