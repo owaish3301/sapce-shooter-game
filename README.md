@@ -61,7 +61,7 @@ SpaceShooter/
 
 ## Screenshots
 
-*Add screenshots of your game here*
+![](Images/Screenshot.png)
 
 ## License
 
