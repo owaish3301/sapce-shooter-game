@@ -1,5 +1,6 @@
 import pygame
 from os.path import join
+import sys
 from Laser import Laser
 
 class Player(pygame.sprite.Sprite):
@@ -16,7 +17,12 @@ class Player(pygame.sprite.Sprite):
         self.last_laser_time = 0
         self.can_fire = True
         self.laser_sprites = pygame.sprite.Group()
-        self.laser_surf = pygame.transform.scale(pygame.image.load(join("images","laser.png")).convert_alpha(),(50,50))
+        try:
+            self.laser_surf = pygame.transform.scale(pygame.image.load(join("Images","laser.png")).convert_alpha(),(50,50))
+        except pygame.error as e:
+            print(f"Error loading laser image: {e}")
+            pygame.quit()
+            sys.exit()
 
     def update_laser_cooldown(self):
         if not self.can_fire:

@@ -1,5 +1,6 @@
 import pygame
 from os.path import join
+import sys
 
 from Player import Player
 from Meteor import Meteor
@@ -13,11 +14,20 @@ running = True
 
 clock = pygame.time.Clock() 
 
-Player_surf = pygame.image.load(join("images","shooter.png")).convert_alpha()
-meteor_surf = pygame.transform.scale(pygame.image.load(join("images","astroid.png")).convert_alpha(),(150,150))
+# Load images with error handling
+try:
+    Player_surf = pygame.image.load(join("Images","shooter.png")).convert_alpha()
+    meteor_surf = pygame.transform.scale(pygame.image.load(join("Images","astroid.png")).convert_alpha(),(150,150))
+except pygame.error as e:
+    print(f"Error loading images: {e}")
+    print("Make sure the Images folder contains: shooter.png, astroid.png, laser.png")
+    pygame.quit()
+    sys.exit()
 
 score = 0 
+previous_score = -1
 font = pygame.font.Font(None,40)
+score_surf = font.render("0", True, "red")
 
 all_sprites = pygame.sprite.Group()
 meteor_sprites = pygame.sprite.Group()
@@ -27,10 +37,6 @@ player = Player(all_sprites,WINDOW_HEIGHT, Player_surf,WINDOW_WIDTH)
 meteor_event = pygame.event.custom_type()
 pygame.time.set_timer(meteor_event, 2000)
 
-def update_score(score):
-    font_surf = font.render(str(score),True, "red")
-    return font_surf
-
 while running:
     dt = clock.tick() / 1000
 
@@ -38,7 +44,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if event.type == meteor_event:
-            Meteor((all_sprites,meteor_sprites), meteor_surf)
+            Meteor((all_sprites,meteor_sprites), meteor_surf, WINDOW_WIDTH, WINDOW_HEIGHT)
 
     all_sprites.update(dt)
     if pygame.sprite.spritecollide(player,meteor_sprites,False):
@@ -49,11 +55,14 @@ while running:
             score+=1
             laser.kill()
 
+    # Only update score surface when score changes
+    if score != previous_score:
+        score_surf = font.render(str(score), True, "red")
+        previous_score = score
     
     display_surface.fill('gray')
     all_sprites.draw(display_surface)
-
-    display_surface.blit(update_score(score),(WINDOW_WIDTH - 100,10))
+    display_surface.blit(score_surf, (WINDOW_WIDTH - 100, 10))
     pygame.display.update()
 
 
