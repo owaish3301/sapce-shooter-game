@@ -9,8 +9,7 @@ class Meteor(pygame.sprite.Sprite):
         self.current_time = pygame.time.get_ticks()
         self.speed = 150
         self.direction = pygame.math.Vector2(random.uniform(-0.5,0.5),1)
-
-
+        
     def update(self,dt):
         if self.rect.left<=0 or self.rect.right>=1280:
             self.direction.x *= -1
