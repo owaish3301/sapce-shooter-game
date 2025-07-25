@@ -28,6 +28,7 @@ score = 0
 previous_score = -1
 font = pygame.font.Font(None,40)
 score_surf = font.render("0", True, "red")
+score_rect = score_surf.get_frect(left=WINDOW_WIDTH - 100,top=20)
 
 all_sprites = pygame.sprite.Group()
 meteor_sprites = pygame.sprite.Group()
@@ -47,11 +48,11 @@ while running:
             Meteor((all_sprites,meteor_sprites), meteor_surf, WINDOW_WIDTH, WINDOW_HEIGHT)
 
     all_sprites.update(dt)
-    if pygame.sprite.spritecollide(player,meteor_sprites,False):
+    if pygame.sprite.spritecollide(player,meteor_sprites,False,pygame.sprite.collide_mask):
         running = False
     
     for laser in player.laser_sprites:
-        if pygame.sprite.spritecollide(laser,meteor_sprites,True):
+        if pygame.sprite.spritecollide(laser,meteor_sprites,True, pygame.sprite.collide_mask):
             score+=1
             laser.kill()
 
@@ -62,7 +63,8 @@ while running:
     
     display_surface.fill('gray')
     all_sprites.draw(display_surface)
-    display_surface.blit(score_surf, (WINDOW_WIDTH - 100, 10))
+    display_surface.blit(score_surf, score_rect)
+    pygame.draw.rect(display_surface,"red",score_rect.inflate(20,20),2)
     pygame.display.update()
 
 
